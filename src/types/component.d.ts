@@ -1,3 +1,5 @@
+import XtxSwiperVue from '../components/XtxSwiper.vue'
+
 /**
  * declare module '@vue/runtime-core'
  *   现调整为
@@ -7,5 +9,6 @@ import 'vue'
 declare module 'vue' {
   export interface GlobalComponents {
     //
+    XtxSwiper: typeof XtxSwiperVue
   }
 }
