@@ -4,9 +4,10 @@ import CustomNavbar from './components/CustomNavbar.vue'
 import { onLoad } from '@dcloudio/uni-app'
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
 import { ref } from 'vue'
-import CategoryPanel from '@/components/CategoryPanel.vue'
-import HotPanel from '@/components/HotPanel.vue'
+import CategoryPanel from './components/CategoryPanel.vue'
+import HotPanel from './components/HotPanel.vue'
 import type { XtxGuessInstance } from '@/types/components'
+import PageSkeleton from './components/PageSkeleton.vue'
 
 const bannerList = ref<BannerItem[]>([])
 const categoryList = ref<CategoryItem[]>([])
@@ -49,11 +50,13 @@ const onRefresherrefresh = async () => {
   isTriggered.value = false
 }
 
+const isLoading = ref(false)
+
 // 页面加载
-onLoad(() => {
-  getHomeBannerData()
-  getHomeCategoryData()
-  getHomeHotData()
+onLoad(async () => {
+  isLoading.value = true
+  await Promise.all([getHomeBannerData(), getHomeCategoryData(), getHomeHotData()])
+  isLoading.value = false
 })
 </script>
 
@@ -67,12 +70,15 @@ onLoad(() => {
     scroll-y
     @scrolltolower="onScrolltolower"
   >
-    <XtxSwiper :list="bannerList"></XtxSwiper>
-    <CategoryPanel :list="categoryList"></CategoryPanel>
-    <HotPanel :list="hotList"></HotPanel>
-    <view class="index"> </view>
-    <!-- 猜你喜欢 -->
-    <XtxGuess ref="guessRef" />
+    <PageSkeleton v-if="isLoading"></PageSkeleton>
+    <template v-else>
+      <XtxSwiper :list="bannerList"></XtxSwiper>
+      <CategoryPanel :list="categoryList"></CategoryPanel>
+      <HotPanel :list="hotList"></HotPanel>
+      <view class="index"> </view>
+      <!-- 猜你喜欢 -->
+      <XtxGuess ref="guessRef" />
+    </template>
   </scroll-view>
 </template>
 
