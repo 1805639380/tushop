@@ -1,6 +1,7 @@
 import type { PageParams } from '@/types/global'
-import type { BannerItem, CategoryItem, GuessItem, HotItem, PageResult } from '@/types/home'
+import type { BannerItem, CategoryItem, HotItem, PageResult } from '@/types/home'
 import { http } from '@/utils/http'
+import type { GoodsItem } from '@/types/global'
 
 export const getHomeBannerApi = (distributionSite = 1) => {
   return http<BannerItem[]>({
@@ -45,3 +46,5 @@ export const getHomeGoodsGuessLikeAPI = (data?: PageParams) => {
     data,
   })
 }
+
+export type GuessItem = GoodsItem
