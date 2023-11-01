@@ -6,8 +6,8 @@ import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
 import { ref } from 'vue'
 import CategoryPanel from './components/CategoryPanel.vue'
 import HotPanel from './components/HotPanel.vue'
-import type { XtxGuessInstance } from '@/types/components'
 import PageSkeleton from './components/PageSkeleton.vue'
+import { useGuessList } from '@/composables'
 
 const bannerList = ref<BannerItem[]>([])
 const categoryList = ref<CategoryItem[]>([])
@@ -29,12 +29,7 @@ const getHomeHotData = async () => {
 }
 
 // 获取猜你喜欢组件实例
-const guessRef = ref<XtxGuessInstance>()
-
-// 滚动触底事件
-const onScrolltolower = () => {
-  guessRef.value?.getMore()
-}
+const { guessRef, onScrolltolower } = useGuessList()
 
 // 下拉刷新状态
 const isTriggered = ref(false)
